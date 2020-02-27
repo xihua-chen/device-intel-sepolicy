@@ -17,3 +17,4 @@ not_full_treble(`
 
 allow dhcp_eth0 self:packet_socket read;
 allow dhcp_eth0 self:udp_socket ioctl;
+allow dhcp_eth0 rootfs:dir read;
