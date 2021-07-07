@@ -1,0 +1,20 @@
+# seclabel is specified in init.rc
+type dhcp_eth0, domain;
+type dhcp_eth0_exec, exec_type, file_type, vendor_file_type;
+
+recovery_only(`
+  # boot the dhcp_eth0 service for recovery
+  domain_trans(init, rootfs, dhcp_eth0)
+  allow dhcp_eth0 rootfs:file rx_file_perms;
+')
+
+init_daemon_domain(dhcp_eth0)
+
+not_full_treble(`
+  binder_use(dhcp_eth0)
+  add_service(dhcp_eth0, dhcp_eth0_service)
+')
+
+allow dhcp_eth0 self:packet_socket read;
+allow dhcp_eth0 self:udp_socket ioctl;
+allow dhcp_eth0 rootfs:dir read;
